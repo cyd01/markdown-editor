@@ -1,0 +1,8 @@
+*.exe
+*.md
+!README.md
+*.bat
+*.orig
+password.inc
+mdwiki.html
+

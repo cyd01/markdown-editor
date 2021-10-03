@@ -1,0 +1,58 @@
+import com.my.common.Base64 ;
+import com.my.common.FileUtils ;
+
+boolean test ;
+if( HTTPCONNECTOR.getMethod() == "POST" ) {
+	if( ((page=HTTPCONNECTOR.getParameter( "page" )) != null) && ((data=HTTPCONNECTOR.getParameter( "data" )) != null)  ) {
+	    test = false ;
+		if( FileUtils.existsFile( CWD + "/" + "pass/password.inc" ) ) {
+			String buffer = FileUtils.loadFile( CWD + "/" + "pass/password.inc" ).replaceAll( "[\r\n]*\$", "" ) ;
+			String login = buffer.replaceAll( ":.*\$", "" ) ;
+		    String password = buffer.replaceAll( "^[^:]*:", "" ) ;
+		    if( (Authorization=HTTPCONNECTOR.getHeader( "Authorization" )) != null ) {
+		        Authorization = Authorization.replaceAll( "^Basic[ ]*", "" ).replaceAll( "[\r\n]*\$", "" ) ;
+		        if( Authorization == Base64.encode( buffer ) ) {
+                    test = true ;  
+                } else {
+                    HTTPCONNECTOR.setBody( "Wrong password" ) ;
+                }
+		    }
+		} else {
+		    test = true ;
+		}
+		if( test==false ) { 
+			HTTPCONNECTOR.setCode( 401 ) ;
+			HTTPCONNECTOR.addHeader( "WWW-Authenticate", "Basic realm=\"Protected area\"" ) ;
+		} else {
+    		HTTPCONNECTOR.addHeader( "Content-type", "text/plain" ) ;
+    		HTTPCONNECTOR.addHeader( "Expires", 0 ) ;
+    		File file = new File( CWD + "/" + page ) ;
+	    	String parent = file.getParent() ;
+	    	test = true ;
+		    if( !FileUtils.exists( parent ) ) {
+		        if( !FileUtils.makeSubDirs( parent ) ) {
+		            HTTPCONNECTOR.setCode( 500 ) ;
+		            HTTPCONNECTOR.setBody( "Can not create directory " + parent + " !" ) ;
+		            test = false ;
+		        }
+		    }
+		    if( test ) {
+		        if( !FileUtils.storeFile( CWD + "/" + page, Base64.decodeString( data ) ) ) {
+		            HTTPCONNECTOR.setCode( 500 ) ;
+		            HTTPCONNECTOR.setBody( "Can not write file " + page ) ;
+		        } else {
+		            HTTPCONNECTOR.setCode( 200 ) ;
+		            HTTPCONNECTOR.setBody( "Page " + page + " updated." ) ;
+		        }
+		    }
+	    }
+	} else {
+		HTTPCONNECTOR.setCode( 400 ) ;
+		HTTPCONNECTOR.setBody( "Bad request!" ) ;
+	}
+} else {
+	HTTPCONNECTOR.setCode( 405 ) ;
+	HTTPCONNECTOR.setBody( "Method Not Allowed!" ) ;
+}
+
+HTTPCONNECTOR.send() ;

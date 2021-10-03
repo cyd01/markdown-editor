@@ -1,0 +1,42 @@
+RewriteEngine On
+RewriteCond %{HTTP:Authorization} ^(.*)
+RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
+
+AddType text/markdown .md .markdown
+
+DirectoryIndex index.php index.html
+Options -Indexes
+
+<Files .htaccess>
+  order allow,deny
+  deny from all
+</Files>
+
+<Files ~ "\.php">
+  order deny,allow
+  deny from all
+</Files>
+
+<Files ~ "^(edit).php">
+  order deny,allow
+  allow from all
+</Files>
+
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|flv|gif|htm|html|ico|jpe|jpeg|jpg|js|mp3|mp4|png|pdf|swf)$">
+    Header unset Cache-Control
+    Header set Cache-Control "max-age=600, public"
+  </FilesMatch>
+  <FilesMatch "\.(md|txt)$">
+	FileETag None
+	Header unset ETag
+	Header unset Pragma
+	Header unset Cache-Control
+	Header unset Last-Modified
+	Header set Pragma "no-cache"
+	Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+	Header set Expires "0"
+	Header set X-Salt 65536
+  </FilesMatch>
+</IfModule>

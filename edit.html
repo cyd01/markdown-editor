@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>☢</title>
+
+<!-- HELP
+/index.html?engine=showdown&style=gitlab&backend=_#/README.md
+	engine: marked, showdown, raw, base64
+	style: original, normalize, github, gitlab, minist, air, modest, retro, splendor, screen, markdown
+	backend: php, sh, gy, _ (add no extension)
+
+Embedded tag
+[//]: # (title:Index)
+[//]: # (style:minist)
+
+To switch from page viewer to page editor, just triple-click
+To clear local storage press ALT+c
+To protect the page with password ALT+p
+To save the page press ALT+s
+To change style sheet press ALT+t
+To print help page press ALT+F1 or ALT+z
+To switch back to the viewer press escape key
+-->
+
+
+<!-- INCLUDE_START -->
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+
+<link rel="stylesheet" title="original" href="css/style.css">
+<link rel="alternate stylesheet" title="normalize" href="css/normalize.css">
+<link rel="alternate stylesheet" title="github" href="css/github.css">
+<link rel="alternate stylesheet" title="gitlab" href="css/gitlab.css">
+<link rel="alternate stylesheet" title="minist" href="css/minist.css">
+<link rel="alternate stylesheet" title="air" href="css/air.css">
+<link rel="alternate stylesheet" title="modest" href="css/modest.css">
+<link rel="alternate stylesheet" title="retro" href="css/retro.css">
+<link rel="alternate stylesheet" title="splendor" href="css/splendor.css">
+<link rel="alternate stylesheet" title="screen" href="css/screen.css">
+<link rel="alternate stylesheet" title="markdown" href="css/markdown.css">
+<link rel="alternate stylesheet" title="foghorn" href="css/foghorn.css">
+<link rel="alternate stylesheet" title="md" href="css/md.css">
+
+<link rel="stylesheet" href="css/highlight.min.css">
+<!--<link rel="stylesheet" href="css/menu.css">-->
+
+<!-- Style for mermaid -->
+<style>
+      div.mermaid {
+        font-family: 'Courier New', Courier, monospace !important;
+      }
+</style>
+
+
+<script type="text/javascript" src="js/crc32.min.js"></script>
+
+
+<!-- Base64
+https://github.com/dankogai/js-base64
+-->
+<script type="text/javascript" src="js/base64.js"></script>
+
+<!-- SweetAlert2 A beautiful, responsive, customizable, accessible (WAI-ARIA) replacement for JavaScript's popup boxes
+https://sweetalert2.github.io/
+https://cdn.jsdelivr.net/npm/sweetalert2@10
+-->
+<script type="text/javascript" src="js/sweetalert2.all.min.js"></script>
+<!--[if IE]><!--><script type="text/javascript" src="js/promise.min.js"></script><!--<![endif]--> <!--After Sweet Alert-->
+
+<!-- VueJS
+https://fr.vuejs.org/
+-->
+<script type="text/javascript" src="js/vue.min.js"></script> <!-- Impossible d'upgrader !  -->
+
+<!-- Showdown
+http://showdownjs.com/
+https://github.com/showdownjs/showdown
+-->
+<script type="text/javascript" src="js/showdown.min.js"></script>
+
+<!-- Marked
+https://github.com/markedjs/marked
+https://github.com/markedjs/marked/raw/master/marked.min.js
+-->
+<script type="text/javascript" src="js/marked.min.js"></script>
+
+<!-- Lodash: A modern JavaScript utility library delivering modularity, performance & extras.
+https://lodash.com/
+https://www.jsdelivr.com/package/npm/lodash
+-->
+<script type="text/javascript" src="js/lodash.min.js"></script>
+
+<!-- highlight.js: Syntax highlighting for the Web
+https://highlightjs.org/
+https://github.com/highlightjs/highlight.js
+-->
+<script type="text/javascript" src="js/highlight.min.js"></script>
+
+<!-- SJCL: Stanford Javascript Crypto Library
+https://github.com/bitwiseshiftleft/sjcl
+-->
+<script type="text/javascript" src="js/sjcl.js"></script>
+
+<!-- Mermaid: Diagram as code
+http://mermaid-js.github.io/mermaid/
+https://github.com/mermaid-js/mermaid
+-->
+<script type="text/javascript" src="js/mermaid.js"></script>
+<script type="text/javascript" src="js/mermaid-converter.js"></script>
+
+<!-- Personnal tools
+-->
+<script type="text/javascript" src="js/com.js"></script>
+
+<!-- INCLUDE_END -->
+
+<!--
+	Third-part scripts initialization
+-->
+<script type="text/javascript">hljs.initHighlightingOnLoad();</script>
+
+
+<!--
+	Personnal scripts
+-->
+<script type="text/javascript">
+var debug = false ;
+var separator = "#/" ;
+var defaultPage = "index.md" ;
+var style_list = [ "original" ] ;
+var style = "original" ;
+var highlightjs = true ;
+var engine = "marked" ;
+//var engine = "showdown" ;
+var backend = "edit.php" ;
+var page = {
+	name: ""
+	, pathname: ""
+	, path: ""
+	, pathcrc: ""
+	, href: ""
+	, url: ""
+	, data: ""
+	, readOnly: false
+} ;
+var password = "" ;
+var salt = "" ;
+
+function doDebug( tt, dt ) {
+	if( typeof dt === 'object' ) {
+		dt = JSON.stringify( dt, null, "" ) ;
+	}
+	var data = JSON.parse( sessionStorage.getItem('MDDebug') ) ;
+	if( (data==null) || (data=="") ) { console.log("data null"); data = [] ; }
+	while( data.length>=10 ) { data.shift() ; }
+	console.log( tt+": "+dt ) ;
+	data.push( tt+": "+dt ) ;
+	sessionStorage.setItem('MDDebug',JSON.stringify(data)) ;
+	data = null ;
+}
+
+function doShowdown( data ) {
+	var converter = new showdown.Converter({tables: true, strikethrough: true, parseImgDimensions: true, simplifiedAutoLink: true, excludeTrailingPunctuationFromURLs: true, tasklists: true, smoothLivePreview: true}) ;
+	return converter.makeHtml( data.replace(/__([^_]*)__/gm, '<u>$1</u>') ) ;
+}
+function doMarked( data ) {
+	if( highlightjs ) {
+		return  marked( data.replace(/__([^_]*)__/gm, '<u>$1</u>'), { highlight: function(code) { return hljs.highlightAuto(code).value ; } } ) ;
+	} else {
+		return  marked( data.replace(/__([^_]*)__/gm, '<u>$1</u>') ) ;
+	}
+}
+function doMermaid( data ) {
+	var result ;
+	result = mdToSVG( data ) ;
+	return result ;
+}
+function doMarkdown( data ) {
+	var result = data ;
+	if( data.length>0) { localStorage.setItem("MDEditorSave",Base64.encode( data )) ; }
+	if( result.match( /```mermaid/ ) ) { result = doMermaid( result ) ; }
+	
+	if( engine == "showdown" ) { result = doShowdown( result ) ; }
+	else if( engine == "raw" ) { result = result ; }
+	else if( engine == "base64" ) { result = Base64.encode( result ) ; }
+	else { result = doMarked( result ) ; }
+	
+	return result ;
+}
+function renderHTML( id, data64 ) {
+	document.getElementById(id).innerHTML = "" ;
+	data = Base64.decode(data64) ;
+	if( page.name.match( /\.md$/ ) ) {
+		document.getElementById(id).innerHTML = doMarkdown( data ) ;
+	} else {
+		document.getElementById(id).innerHTML = data ;
+	}
+	if( (res = data.match( /^[ ]*\[\/\/\]:[ ]*#[ ]*\([ ]*title:.*\).*$/m ))!=null ) {
+		document.title = res[0].replace( /.*\([ ]*title:/, "" ).replace( /[ ]*\).*$/, "" ) ;
+	}
+	if( (res = data.match( /^[ ]*\[\/\/\]:[ ]*#[ ]*\([ ]*(style|theme):.*\).*$/m ))!=null ) {
+		switch_style( res[0].replace( /.*\([ ]*style:[ ]*/, "" ).replace( /[ ]*\).*$/, "" ) ) ;
+	}
+	if( (res = data.match( /^[ ]*\[\/\/\]:[ ]*#[ ]*\([ ]*readonly[ ]*\).*$/m ))!=null ) { page.readOnly = true ; }
+	
+	if( document.getElementById(id).innerHTML.match(/```mermaid/) ) { renderMermaid() ; }
+}
+function doHTML( name, data ) {
+	page.data = data ;
+	page.name = name ;
+	document.title = name ;
+	renderHTML( "content", page.data ) ;
+}
+function doLoad( name ) {
+	reg = new RegExp( '^' + separator  ) ;
+	name = name.replace( reg, "" ) ;		//name = location.hash.replace( /^#\//, "" ) ;
+	reg = null ;
+	page.name = name ;
+	if( !name.match( /\// ) ) { page.pathname = "./" ; } else { page.pathname = name.replace( /[^\/]+$/, "" ) ; }
+	page.path = location.protocol + "//" + location.host + location.pathname.replace( /\/[^\/]*$/,"/" ) ;
+	page.pathcrc = crc32(page.path) ;
+	page.href = location.protocol + "//" + location.host + location.pathname + separator + page.name ;
+	page.script = location.protocol + "//" + location.host + location.pathname ;
+	page.url = location.protocol + "//" + location.host + location.pathname.replace( /\/[^\/]*$/,"/" ) + name ;
+	page.data = null ;
+
+	if( sessionStorage.getItem( "MDEditor"+page.pathcrc ) ) { password = sessionStorage.getItem( "MDEditor"+page.pathcrc ) ; }
+	else { password = "" ; }
+	if( sessionStorage.getItem( "MDStyle" ) ) { style = sessionStorage.getItem( "MDStyle" ) ; switch_style( style ) ; }
+	
+	if( debug ) { doDebug( "doLoad", page.url ) ; }
+	loadPage( page.url
+		, function(res,s) { 
+			data = res ;
+			salt = s ;
+			if( data.match( /^!PASS/ ) ) {
+				if( password=="" ) { doPass() ; }
+				data = data.replace( /^!PASS/, "" ) ;
+				data = sjcl.decrypt( password, data ) ;
+			}
+			doHTML( name, Base64.encode( data ) ) ;
+		}
+		, function() { 
+			if( page.name.match( /^index\.md$/ ) ) {
+				doHash( "README.md" ) ;
+			} else if( page.name.match( /\.md$/ ) ) {
+				//swal( "Oops", "Something went wrong!<br/>Unable to open <u>" + name + "</u> file", "error" ) ;
+				Swal.fire( {title:"Oops", html:"Something went wrong!<br/>Unable to open <u>" + name + "</u> file", icon:"error"} ) ;
+				page.data = "" ;
+				if( localStorage.getItem("MDEditorSave") != null ) {
+					//swal( 'Local Storage', 'Found something!', 'success' ) ;
+					Swal.fire( {title:'Local Storage', text:'Found something!', icon:'success'} ) ;
+					Swal.fire({
+					    title: "Local Storage",
+					    text: "Found something in browser local storage!",
+					    icon: "success",
+					    timer: 2500,
+					    allowOutsideClick: true
+					});
+					page.data = localStorage.getItem("MDEditorSave") ;
+				}
+				if( page.data.length==0 ) {
+					page.data = Base64.encode( "[comment]: <> (This is a comment, it will not be included)\n[//]: # (title:"+page.name+")\n[//]: # (style:original)\n\n# Main title" ) ;
+				}
+				renderHTML( "content", page.data ) ;
+				switchToEditor() ;
+			} else {
+				doLoad( page.name+".md" ) ;
+			}
+		} 
+	) ;
+}
+function switch_style(css_title) {
+	if( css_title == null ) {
+		var n = style_list.indexOf( style ) + 1 ;
+		if( n>=style_list.length ) { n = 0 ; }
+		style = style_list[n] ;
+		n = null ;
+	} else {
+		if( style_list.indexOf(css_title)==-1 ) {
+			loadjscssfile(css_title+".css", "css", css_title) ;
+			style_list.push(css_title) ;
+		} 
+		if( style_list.indexOf(css_title)==-1 ) { return ; }
+		style = css_title ; 
+	}
+var i, link_tag ;
+
+ for (i = 0, link_tag = document.getElementsByTagName("style") ;
+    i < link_tag.length ; i++ ) {
+    if( link_tag[i].title ) {
+      if( link_tag[i].title == "ttxt" ) { link_tag[i].disabled = false ; } else { link_tag[i].disabled = true ; } 
+      if (link_tag[i].title == style) {
+        link_tag[i].disabled = false ;
+      }
+    }
+  }
+
+  for (i = 0, link_tag = document.getElementsByTagName("link") ;
+    i < link_tag.length ; i++ ) {
+    if ((link_tag[i].rel.indexOf( "stylesheet" ) != -1) &&
+      link_tag[i].title) {
+      link_tag[i].disabled = true ;
+      if (link_tag[i].title == style) {
+        link_tag[i].disabled = false ;
+      }
+    }
+  }/*
+ for (i = 0, link_tag = document.getElementsByTagName("style") ;
+    i < link_tag.length ; i++ ) {
+    if( link_tag[i].title ) {
+      if (link_tag[i].title == "ttxt") {
+        link_tag[i].disabled = false ;
+      }
+    }
+  }*/
+  link_tag = null ;
+  sessionStorage.setItem( "MDStyle", style ) ;
+}
+function info_style() {
+  Swal.fire({
+  title: 'Style changed!',
+  text: sessionStorage.getItem( "MDStyle" ),
+  timer: 1000,
+  timerProgressBar: true,
+  });
+}
+function switchToEditor() {
+	if( page.readOnly ) { console.log("Page in read only mode") ; return ; }
+	pct = document.documentElement.scrollTop/ document.documentElement.scrollHeight ;
+	document.getElementById("content").style.display = 'none' ;
+	document.getElementById('ttxt').value = '' ;
+	data = Base64.decode( page.data ) ;
+	document.getElementById('ttxt').value = data ;
+	document.getElementById("editcss").style.display = 'none' ;
+	document.getElementById("editor").style.display = 'block' ;
+	n = Math.round( pct*data.length ) ;
+	textareaSelect( document.getElementById('ttxt'), n, n ) ;
+	force_scroll( document.getElementById('ttxt'), pct ) ;
+	document.getElementById('ttxt').click() ;
+}
+function switchToContent() {
+	pct = document.documentElement.scrollTop/ document.documentElement.scrollHeight ;
+	page.data = Base64.encode( document.getElementById('ttxt').value ) ;
+	renderHTML( "content", page.data ) ;
+	document.getElementById("editor").style.display = 'none' ;
+	document.getElementById("editcss").style.display = 'none' ;
+	document.getElementById("content").style.display = 'block' ;
+	force_scroll( document.documentElement, pct ) ;
+}
+function switch_textedit() {
+	if( document.getElementById('editor').style.display!='none' ) { 
+		document.getElementById('editor').style.display='none' ; 
+		document.getElementById('editcss').style.display='block' ;
+		textareaSelect( document.getElementById('tcss'), n, n ) ; 
+		document.getElementById('tcss').click() ; 
+	} else { 
+		document.getElementById('editcss').style.display='none' ;
+		document.getElementById('editor').style.display='block' ; 
+		textareaSelect( document.getElementById('ttxt'), n, n ) ; 
+		document.getElementById('ttxt').click() ; 
+	}
+}
+function doSave() { 
+	if( page!=null ) {
+		if( password == "" ) {
+			data = Base64.encode(document.getElementById('ttxt').value) ;
+		} else {
+			data = Base64.encode( "!PASS" + sjcl.encrypt( password, document.getElementById('ttxt').value ) ) ;
+		}
+		savePage( backend
+			, page.name
+			, data
+			, function() { Swal.fire( {title:'Good job!', text:'Everything is fine!', icon:'success'} ) ; switchToContent() ; }
+			, function() { Swal.fire( {title:"Oops", html:"Something went wrong while saving page<br/><u>"+page.name+"</u> !", icon:"error"} ) ; } 
+		) ; 
+	}
+}
+function doHash( h, t ) {
+	t = t || true ;
+	reg = new RegExp( '^' + separator  ) ;
+	if( !h.match( reg ) ) { h = separator + h ; }
+	reg = null ;
+	if( debug ) { doDebug( "location.assign", page.script + h ) ; }
+	location.assign( page.script + h ) ;
+	location.reload( t ) ;
+}
+function doJump( ev ) {
+	url = ev.hash ;
+	if( url == "" ) {
+		url = ev.attributes[0].nodeValue ;
+		if( !url.match( /^http[s]?:\/\// ) ) {
+			if( url.match( /\.md$/ ) ) {
+				ev.removeAttribute('href');
+				url = page.script + separator + url ;
+				if( debug ) { doDebug( "window.open", url ) ; }
+				window.open( url, "_self", "", true ) ;
+				return true ;
+			} else {
+				url = page.path + '/' + url ;
+			}
+			url = url.replace( /\/\//g, "/" ) ;
+		}
+		if( debug ) { doDebug( "location.assign", url ) ; }
+		location.assign( url ) ;
+		return false;
+	} else {
+		if( debug ) { doDebug( "doHash-->", url ) ; }
+		doHash( url ) ;
+		return false ;
+	}
+}
+function doHelp() {
+  Swal.fire({
+  width: 600,
+  title: 'Help page?',
+  html: '<ul style="text-align:left;"><li>To switch from page viewer to page editor, just triple-click</li><li>To clear local storage press ALT+c</li><li>To protect the page with password ALT+p</li><li>To save the page press ALT+s</li><li>To change style sheet press ALT+t</li><li>To change editor press ATL+y</li><li>To print help page press ALT+F1 or ALT+z</li><li>To switch back to the viewer press escape key</li></ul>'
+  });
+}
+function doPass() {
+	password = window.prompt( "Protected mode. Please enter the password:", password ) ;
+	if( password == null ) { password = "" ; }
+	if( password == "" ) {
+		sessionStorage.removeItem( "MDEditor"+page.pathcrc ) ;
+	} else {
+		sessionStorage.setItem( "MDEditor"+page.pathcrc, password ) ;
+	}
+}
+function doScroll(el) {
+	pos = el.scrollTop/el.scrollHeight ;
+	force_scroll( document.documentElement, pos ) ;
+}
+function doCleanStorage() {
+	localStorage.removeItem("MDEditorSave");
+	console.log("Clean local storage")
+}
+function init() {
+	var Params = getParams() ;
+	if( Params.data ) {
+		doHTML( '_internal.md', Params.data ) ;
+	} else {
+		if( location.hash=="" ) { 
+			location.replace( location.href + separator + defaultPage ) ; 
+		} else {
+			doLoad( location.hash ) ;
+		}
+	}
+	if( Params.engine ) { engine = Params.engine.toLowerCase() ; }
+	if( Params.backend ) { 
+		backend = Params.backend.toLowerCase() ;
+		if( backend=="_" ) { backend = "/edit" ; }
+		else if( !backend.match( /\./ ) ) {  backend = "edit." + Params.backend.toLowerCase() ; }
+		else if( backend=="edit.groovy" ) { backend = "edit.gy" ; }
+		else if( backend=="edit._" ) { backend = "edit" ; }
+	}
+	for (i = 0, link_tag = document.getElementsByTagName("link") ; i < link_tag.length ; i++ ) {
+		if( link_tag[i].title != "" ) {
+			if( style_list.indexOf( link_tag[i].title ) == -1 ) {
+				style_list.push( link_tag[i].title ) ;
+			}
+		}
+	}
+	for (i = 0, link_tag = document.getElementsByTagName("style") ; i < link_tag.length ; i++ ) {
+		if( (link_tag[i].title != "") && (link_tag[i].title != "ttxt") ) {
+			if( style_list.indexOf( link_tag[i].title ) == -1 ) {
+				style_list.push( link_tag[i].title ) ;
+			}
+		}
+	}
+	if( Params.style ) { switch_style( Params.style.toLowerCase() ) ; }
+	else { switch_style( "original" ) ; }
+	Params = null ;
+}
+</script>
+
+<style type="text/css" title="ttxt">
+#content {
+  padding: 3px 3% 3% 3% ;
+}
+#ttxt {
+  position: fixed;
+  display: inline-block;
+  left: 3px;
+  top: 0px;
+  resize: vertical;
+  height: 100%;
+  width: 49%;
+  border: none;
+  border-right: 1px solid #ccc;
+  background-color: #f6f6f6;
+  font-size: 14px;
+  font-family: 'Monaco', courier, monospace;
+  padding: 20px;
+}
+textarea, #editor div {
+  display: inline-block;
+  width: 49%;
+  height: 100%;
+  vertical-align: top;
+  box-sizing: border-box;
+  padding: 0 20px;
+}
+#editor {
+  position: relative;
+  left: 50%;
+}
+#tcss {
+  resize: vertical;
+}
+textarea, #editcss div {
+  display: inline-block;
+  width: 49%;
+  height: 100%;
+  vertical-align: top;
+  box-sizing: border-box;
+  padding: 0 20px;
+}
+#editcss {
+  position: relative;
+  left: 0%;
+  height: 100%;
+}
+code {
+  overflow-x: visible;
+  overflow-wrap: break-word;
+}
+pre {
+  overflow-x: auto;
+  overflow-wrap: break-word;
+}
+//a { pointer-events:none ; }
+</style>
+</head>
+
+<body onLoad="init();">
+
+<!-- Initialize mermaid -->
+<script type="text/javascript">mermaid.initialize({startOnLoad:true});</script>
+<script type="text/javascript">
+function renderMermaid() {
+	mermaid.init(undefined,document.querySelectorAll(".mermaid"));
+}
+</script>
+
+<!--
+<div id="divmenu">
+      <div class="custom-wrapper pure-g" id="menu">
+          <div class="pure-u-1 pure-u-md-1-3">
+              <div class="pure-menu">
+                  <a href="#" class="pure-menu-heading custom-brand">Brand</a>
+                  <a href="#" class="custom-toggle" id="toggle"><s class="bar"></s><s class="bar"></s></a>
+              </div>
+          </div>
+          <div class="pure-u-1 pure-u-md-1-3">
+              <div class="pure-menu pure-menu-horizontal custom-can-transform">
+                  <ul class="pure-menu-list">
+                      <li class="pure-menu-item"><a href="#/Proxy.md" class="pure-menu-link">Proxy</a></li>
+                      <li class="pure-menu-item"><a href="#/README.md" class="pure-menu-link">README</a></li>
+                      <li class="pure-menu-item"><a href="#" class="pure-menu-link">Contact</a></li>
+                  </ul>
+              </div>
+          </div>
+          <div class="pure-u-1 pure-u-md-1-3">
+              <div class="pure-menu pure-menu-horizontal custom-menu-3 custom-can-transform">
+                  <ul class="pure-menu-list">
+                      <li class="pure-menu-item"><a href="#" class="pure-menu-link">Yahoo</a></li>
+                      <li class="pure-menu-item"><a href="#" class="pure-menu-link">W3C</a></li>
+                  </ul>
+              </div>
+          </div>
+</div>
+<script type="text/javascript">
+      (function (window, document) {
+      var menu = document.getElementById('menu'),
+          rollback,
+          WINDOW_CHANGE_EVENT = ('onorientationchange' in window) ? 'orientationchange':'resize';
+      
+      function toggleHorizontal() {
+          menu.classList.remove('closing');
+          [].forEach.call(
+              document.getElementById('menu').querySelectorAll('.custom-can-transform'),
+              function(el){
+                  el.classList.toggle('pure-menu-horizontal');
+              }
+          );
+      };
+      
+      function toggleMenu() {
+          // set timeout so that the panel has a chance to roll up
+          // before the menu switches states
+          if (menu.classList.contains('open')) {
+              menu.classList.add('closing');
+              rollBack = setTimeout(toggleHorizontal, 500);
+          }
+          else {
+              if (menu.classList.contains('closing')) {
+                  clearTimeout(rollBack);
+              } else {
+                  toggleHorizontal();
+              }
+          }
+          menu.classList.toggle('open');
+          document.getElementById('toggle').classList.toggle('x');
+      };
+      
+      function closeMenu() {
+          if (menu.classList.contains('open')) {
+              toggleMenu();
+          }
+      }
+      
+      document.getElementById('toggle').addEventListener('click', function (e) {
+          toggleMenu();
+          e.preventDefault();
+      });
+      
+      window.addEventListener(WINDOW_CHANGE_EVENT, closeMenu);
+      })(this, this.document);
+</script>
+-->
+      
+<div id="editor" style="display: none;">
+  <textarea id="ttxt" v-on:click="update" 
+	@keyup.alt.f1="doHelp();return false;"
+	@keyup.alt.67="doCleanStorage();return false;"
+	@keyup.alt.80="doPass();"
+	@keyup.alt.83="doSave();" 
+	@keyup.alt.84="switch_style(null);info_style();" 
+	@keyup.alt.89="switch_textedit(null);" 
+	@keyup.alt.90="doHelp();return false;"
+	@keyup.esc="switchToContent();" :value="input" @input="update" onScroll="doScroll(this);return false;">
+  </textarea>
+  <div v-html="compiledMarkdown"></div>
+</div>
+
+<div id="editcss" style="display: none;">
+  <textarea id="tcss" v-on:click="update" 
+	@keyup.alt.f1="doHelp();return false;" 
+	@keyup.alt.89="switch_textedit(null);" 
+	@keyup.esc="switchToContent();" :value="input" @input="update">
+  </textarea>
+  <div v-html="compiledMarkdown2"></div>
+</div>
+
+<div id="content">
+</div>
+
+<div id="fakemermaid" style="display:none;">
+</div>
+
+<!-- onDblClick="switchToEditor();" -->
+
+<script type="text/javascript">
+new Vue({
+  el: '#editor',
+  data: {
+//    input: '[comment]: <> (This is a comment, it will not be included)'
+    input: ''
+  },
+  computed: {
+    compiledMarkdown: function () {
+      return doMarkdown( this.input )
+    }
+  },
+  methods: {
+    update: _.debounce(function (e) {
+      //document.getElementById('ttxt').style.height = document.getElementById("editor").scrollHeight + 'px' ;
+      this.input = e.target.value
+    }, 300)
+  }
+}) ;
+
+new Vue({
+  el: '#editcss',
+  data: {
+    input: 'html { font-family: sans-serif; }'
+  },
+  computed: {
+    compiledMarkdown2: function () {
+      return doMarkdown( document.getElementById('ttxt').value )
+    }
+  },
+  methods: {
+    update: _.debounce(function (e) {
+      //document.getElementById('ttxt').style.height = document.getElementById("editor").scrollHeight + 'px' ;
+      this.input = e.target.value
+    }, 300)
+  }
+}) ;
+
+document.getElementById("content").onclick = function(ev) {
+	if( ev.srcElement.nodeName == "A" ) {
+		doJump( ev.srcElement ) ;
+	}
+}
+window.onhashchange = function() {
+	if( document.getElementById('content').style.display=='none' ) { switchToContent() ; return false ; } 
+	else if (window.location.hash != '#undefined') {
+	    doHash( window.location.hash ) ;
+	}
+}
+window.addEventListener('click', function (evt) {
+    if (evt.detail === 3) {
+        switchToEditor() ;
+    }
+});
+/*
+window.document.getElementById("ttxt").addEventListener("scroll", function (event) {
+    var scroll = this.scrollY;
+//    console.log(scroll)
+});*/
+</script>
+
+</body>
+</html>
