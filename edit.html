@@ -12,11 +12,17 @@
 	style: original, normalize, github, gitlab, minist, air, modest, retro, splendor, screen, markdown
 	backend: php, sh, gy, _ (add no extension)
 
+/index.html?data=Wy8vXTogIyAodGl0bGU6VGl0bGUpCgojIE1haW4gdGl0bGUKClRoaXMgaXMgYSBzaG9ydCB0ZXh0
+	Text is base64 encoded
+
 Embedded tag
 [//]: # (title:Index)
 [//]: # (style:minist)
+[//]: # (readonly)
+
 
 To switch from page viewer to page editor, just triple-click
+To swith between plain text or base64 press ATL+b
 To clear local storage press ALT+c
 To protect the page with password ALT+p
 To save the page press ALT+s
@@ -31,6 +37,7 @@ To switch back to the viewer press escape key
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 
 <link rel="stylesheet" title="original" href="css/style.css">
+<link rel="alternate stylesheet" title="test" href="css/test.css">
 <link rel="alternate stylesheet" title="normalize" href="css/normalize.css">
 <link rel="alternate stylesheet" title="github" href="css/github.css">
 <link rel="alternate stylesheet" title="gitlab" href="css/gitlab.css">
@@ -417,7 +424,7 @@ function doHelp() {
   Swal.fire({
   width: 600,
   title: 'Help page?',
-  html: '<ul style="text-align:left;"><li>To switch from page viewer to page editor, just triple-click</li><li>To clear local storage press ALT+c</li><li>To protect the page with password ALT+p</li><li>To save the page press ALT+s</li><li>To change style sheet press ALT+t</li><li>To change editor press ATL+y</li><li>To print help page press ALT+F1 or ALT+z</li><li>To switch back to the viewer press escape key</li></ul>'
+  html: '<ul style="text-align:left;"><li>To switch from page viewer to page editor, just triple-click</li><li>To swith between plain text or base64 press ATL+b</li><li>To clear local storage press ALT+c</li><li>To protect the page with password ALT+p</li><li>To save the page press ALT+s</li><li>To change style sheet press ALT+t</li><li>To change editor press ATL+y</li><li>To print help page press ALT+F1 or ALT+z</li><li>To switch back to the viewer press escape key</li></ul>'
   });
 }
 function doPass() {
@@ -432,6 +439,13 @@ function doPass() {
 function doScroll(el) {
 	pos = el.scrollTop/el.scrollHeight ;
 	force_scroll( document.documentElement, pos ) ;
+}
+function doBase64() {
+	if( document.getElementById("ttxt").value.match(/^[a-zA-Z0-9+\/]*[=]*$/) ) {
+		document.getElementById("ttxt").value = Base64.decode( document.getElementById("ttxt").value );
+	} else {
+		document.getElementById("ttxt").value = page.data;
+	}
 }
 function doCleanStorage() {
 	localStorage.removeItem("MDEditorSave");
@@ -625,6 +639,7 @@ function renderMermaid() {
 <div id="editor" style="display: none;">
   <textarea id="ttxt" v-on:click="update" 
 	@keyup.alt.f1="doHelp();return false;"
+	@keyup.alt.66="doBase64();return false;"
 	@keyup.alt.67="doCleanStorage();return false;"
 	@keyup.alt.80="doPass();"
 	@keyup.alt.83="doSave();" 

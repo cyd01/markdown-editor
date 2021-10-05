@@ -9,7 +9,7 @@ sed  '/INCLUDE_START/,$d' ${main_file}
 echo -n '<link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,' ; base64 favicon.ico|tr -d '\n' ; echo '">'
 echo -n '<style type="text/css" title="original">' ; cat css/style.min.css | tr -d '\n' ; echo '</style>'
 
-for style in normalize github gitlab minist air modest retro splendor screen markdown foghorn md ; do
+for style in test normalize github gitlab minist air modest retro splendor screen markdown foghorn md ; do
 	echo -n '<style type="text/css" title="'${style}'">' ; cat css/${style}.min.css | tr -d '\n' ; echo '</style>'
 done
 

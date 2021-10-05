@@ -1,5 +1,4 @@
 [//]: # (title:Markdown editor)
-[//]: # (style:md)
 
 # Welcome to markdown-editor
 
@@ -50,6 +49,13 @@ Here are the editor shortcuts
 
 ## Special features
 
+### Parameters
+
+| Parameter | Description             | Example                                                                                        |
+| --------- | ----------------------- | ---------------------------------------------------------------------------------------------- |
+| data      | the base64 encoded text | [example](/?data=Wy8vXTogIyAodGl0bGU6VGl0bGUpCgojIE1haW4gdGl0bGUKClRoaXMgaXMgYSBzaG9ydCB0ZXh0) |
+| style     | choose a embedded style | see this page in [retro style](/?style=retro#/README.md)                                       |
+
 ### Special startup tags
 
 Use Markdown comments to define special page settings at the very start of the page:
@@ -82,7 +88,7 @@ Some style are already embedded into markdown-editor:
 
 ### Integrated mermaid
 
-It is possible ton include [mermaid](https://mermaid-js.github.io/mermaid/#/) diragram.
+It is possible ton include [mermaid](https://mermaid-js.github.io/mermaid/#/) diagram.
 
 The mermaid code
 
