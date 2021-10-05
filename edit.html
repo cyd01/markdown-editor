@@ -348,6 +348,7 @@ function switchToEditor() {
 	textareaSelect( document.getElementById('ttxt'), n, n ) ;
 	force_scroll( document.getElementById('ttxt'), pct ) ;
 	document.getElementById('ttxt').click() ;
+	console.log("Current style is "+sessionStorage.getItem("MDStyle"));
 }
 function switchToContent() {
 	pct = document.documentElement.scrollTop/ document.documentElement.scrollHeight ;
