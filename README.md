@@ -45,7 +45,7 @@ Here are the editor shortcuts
 - To change style sheet press ALT+t
 - To print help page press ALT+F1 or ALT+z
 - To switch back to the viewer press escape key
-
+  
 ---
 
 ## Special features
@@ -67,6 +67,12 @@ Use Markdown comments to define special page settings at the very start of the p
 | `[//]: # (style:css/united)`        | Define the page style   |
 | `[//]: # (icon:coffee.ico)`         | Define the favicon page |
 | `[//]: # (readonly)`                | Force read only page    |
+
+### Integrated special emoji
+
+Emojis from this [markdown emojis](https://github.com/markdown-templates/markdown-emojis) page is included.
+
+Example: use this special tag &colon;coffee&colon; to print this emoji :coffee:
 
 ### Integrated themes
 
