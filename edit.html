@@ -18,6 +18,7 @@
 Embedded tag
 [//]: # (title:Index)
 [//]: # (style:minist)
+[//]: # (icon:coffee.ico)
 [//]: # (readonly)
 
 
@@ -212,7 +213,17 @@ function renderHTML( id, data64 ) {
 		switch_style( res[0].replace( /.*\([ ]*style:[ ]*/, "" ).replace( /[ ]*\).*$/, "" ) ) ;
 	}
 	if( (res = data.match( /^[ ]*\[\/\/\]:[ ]*#[ ]*\([ ]*readonly[ ]*\).*$/m ))!=null ) { page.readOnly = true ; }
-	
+	if( (res = data.match( /^[ ]*\[\/\/\]:[ ]*#[ ]*\([ ]*icon:.*\).*$/m ))!=null ) {
+		url = res[0].replace( /.*\([ ]*icon:/, "" ).replace( /[ ]*\).*$/, "" ) ;
+		var link = document.querySelector("link[rel~='icon']");
+		if (!link) {
+			link = document.createElement('link');
+			link.type = 'image/x-icon';
+			link.rel = 'shortcut icon';
+			document.getElementsByTagName('head')[0].appendChild(link);
+		}
+		link.href = url;
+	}
 	if( document.getElementById(id).innerHTML.match(/```mermaid/) ) { renderMermaid() ; }
 }
 function doHTML( name, data ) {

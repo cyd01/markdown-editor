@@ -1,4 +1,5 @@
 [//]: # (title:Markdown editor)
+[//]: # (icon:coffee.ico)
 
 # Welcome to markdown-editor
 
@@ -60,11 +61,12 @@ Here are the editor shortcuts
 
 Use Markdown comments to define special page settings at the very start of the page:
 
-| Comment                             | Description           |
-| ----------------------------------- | --------------------- |
-| `[//]: # (title:This is the title)` | Define the page title |
-| `[//]: # (style:css/united)`        | Define the page style |
-| `[//]: # (readonly)`                | Force read only page  |
+| Comment                             | Description             |
+| ----------------------------------- | ----------------------- |
+| `[//]: # (title:This is the title)` | Define the page title   |
+| `[//]: # (style:css/united)`        | Define the page style   |
+| `[//]: # (icon:coffee.ico)`         | Define the favicon page |
+| `[//]: # (readonly)`                | Force read only page    |
 
 ### Integrated themes
 
