@@ -92,7 +92,7 @@ https://github.com/showdownjs/showdown
 https://github.com/markedjs/marked
 https://github.com/markedjs/marked/raw/master/marked.min.js
 -->
-<script type="text/javascript" src="js/marked.min.js"></script>
+<script type="text/javascript" src="js/marked.js"></script>
 
 <!-- Lodash: A modern JavaScript utility library delivering modularity, performance & extras.
 https://lodash.com/
@@ -478,15 +478,6 @@ function doCleanStorage() {
 }
 function init() {
 	var Params = getParams() ;
-	if( Params.data ) {
-		doHTML( '_internal.md', Params.data ) ;
-	} else {
-		if( location.hash=="" ) { 
-			location.replace( location.href + separator + defaultPage ) ; 
-		} else {
-			doLoad( location.hash ) ;
-		}
-	}
 	if( Params.engine ) { engine = Params.engine.toLowerCase() ; }
 	if( Params.backend ) { 
 		backend = Params.backend.toLowerCase() ;
@@ -509,9 +500,31 @@ function init() {
 			}
 		}
 	}
-	if( Params.style ) { switch_style( Params.style.toLowerCase() ) ; }
-	else { switch_style( "original" ) ; }
-	Params = null ;
+	if( Params.style ) {
+		switch_style( Params.style.toLowerCase() ) ; 
+	} else { 
+		switch_style( "original" ) ; 
+	}
+	if( debug ) {
+		console.log("engine="+engine);
+		console.log("backend="+backend);
+		console.log("style="+style);
+		console.log("styles list:")
+		if(style_list.length>0) {
+			for(i=0;i<style_list.length;i++){ console.log("- "+style_list[i]); }
+		}
+		
+		style_list
+	}
+	if( Params.data ) {
+		doHTML( '_internal.md', Params.data ) ;
+	} else {
+		if( location.hash=="" ) { 
+			location.replace( location.href + separator + defaultPage ) ; 
+		} else {
+			doLoad( location.hash ) ;
+		}
+	}	Params = null ;
 }
 </script>
 
