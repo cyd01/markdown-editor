@@ -52,10 +52,11 @@ Here are the editor shortcuts
 
 ### Parameters
 
-| Parameter | Description             | Example                                                                                        |
-| --------- | ----------------------- | ---------------------------------------------------------------------------------------------- |
-| data      | the base64 encoded text | [example](/?data=Wy8vXTogIyAodGl0bGU6VGl0bGUpCgojIE1haW4gdGl0bGUKClRoaXMgaXMgYSBzaG9ydCB0ZXh0) |
-| style     | choose a embedded style | see this page in [retro style](/?style=retro#/README.md)                                       |
+| Parameter | Description                   | Example                                                                                        |
+| --------- | ----------------------------- | ---------------------------------------------------------------------------------------------- |
+| data      | the base64 encoded text       | [example](/?data=Wy8vXTogIyAodGl0bGU6VGl0bGUpCgojIE1haW4gdGl0bGUKClRoaXMgaXMgYSBzaG9ydCB0ZXh0) |
+| engine    | the markdown rendering engine | choose between markedjs, mardown-it and showdown ([markedjs](/?engine=marked) is the default)  |
+| style     | choose a embedded style       | see this page in [retro style](/?style=retro#/README.md)                                       |
 
 ### Special startup tags
 

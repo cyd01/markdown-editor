@@ -21,8 +21,18 @@ echo -n '<!--[if IE]><!--><script type="text/javascript">' ; cat js/promise.min.
 echo -n '<script type="text/javascript">' ; cat js/base64.min.js | tr -d '\n' ; echo '</script>'
 echo -n '<script type="text/javascript">' ; cat js/crc32.min.js | tr -d '\n' ; echo '</script>'
 echo -n '<script type="text/javascript">' ; cat js/vue.min.js | tr -d '\n' ; echo '</script>'
+
 echo -n '<script type="text/javascript">' ; cat js/marked.min.js | tr -d '\n' ; echo '</script>'
+echo -n '<script type="text/javascript">' ; cat js/markdown-it.min.js | tr -d '\n' ; echo '</script>'
+echo -n '<script type="text/javascript">' ; cat js/markdown-it-emoji.min.js | tr -d '\n' ; echo '</script>'
+echo -n '<script type="text/javascript">' ; cat js/markdown-it-footnote.min.js | tr -d '\n' ; echo '</script>'
+echo -n '<script type="text/javascript">' ; cat js/markdown-it-abbr.min.js | tr -d '\n' ; echo '</script>'
+echo -n '<script type="text/javascript">' ; cat js/markdown-it-mark.min.js | tr -d '\n' ; echo '</script>'
+echo -n '<script type="text/javascript">' ; cat js/markdown-it-ins.min.js | tr -d '\n' ; echo '</script>'
+echo -n '<script type="text/javascript">' ; cat js/markdown-it-sub.min.js | tr -d '\n' ; echo '</script>'
+echo -n '<script type="text/javascript">' ; cat js/markdown-it-sup.min.js | tr -d '\n' ; echo '</script>'
 echo -n '<script type="text/javascript">' ; cat js/showdown.min.js | tr -d '\n' ; echo '</script>'
+
 echo -n '<script type="text/javascript">' ; cat js/lodash.min.js | tr -d '\n' ; echo '</script>'
 echo '<!-- highlight.js: Syntax highlighting for the Web -->'
 echo -n '<script type="text/javascript">' ; cat js/highlight.min.js | tr -d '\n' ; echo '</script>'
@@ -37,7 +47,7 @@ echo '<!--THE END-->'
 
 sed  '1,/INCLUDE_END/d' ${main_file}
 
-} > index.html
+} | sed 's/var debug = true/var debug = false/' > index.html
 
 {
 echo '<?php'
