@@ -186,16 +186,18 @@ var password = "" ;
 var salt = "" ;
 
 function doDebug( tt, dt ) {
-	if( typeof dt === 'object' ) {
-		dt = JSON.stringify( dt, null, "" ) ;
+	if( debug ) {
+		if( typeof dt === 'object' ) {
+			dt = JSON.stringify( dt, null, "" ) ;
+		}
+		var data = JSON.parse( sessionStorage.getItem('MDDebug') ) ;
+		if( (data==null) || (data=="") ) { console.log("data null"); data = [] ; }
+		while( data.length>=10 ) { data.shift() ; }
+		console.log( tt+": "+dt ) ;
+		data.push( tt+": "+dt ) ;
+		sessionStorage.setItem('MDDebug',JSON.stringify(data)) ;
+		data = null ;
 	}
-	var data = JSON.parse( sessionStorage.getItem('MDDebug') ) ;
-	if( (data==null) || (data=="") ) { console.log("data null"); data = [] ; }
-	while( data.length>=10 ) { data.shift() ; }
-	console.log( tt+": "+dt ) ;
-	data.push( tt+": "+dt ) ;
-	sessionStorage.setItem('MDDebug',JSON.stringify(data)) ;
-	data = null ;
 }
 
 function doMarkdownIt( data ) {
@@ -283,6 +285,7 @@ function doHTML( name, data ) {
 function doLoad( name ) {
 	reg = new RegExp( '^' + separator  ) ;
 	name = name.replace( reg, "" ) ;		//name = location.hash.replace( /^#\//, "" ) ;
+	if( debug ) { console.log("Ask for page "+name) ; }
 	reg = null ;
 	page.name = name ;
 	if( !name.match( /\// ) ) { page.pathname = "./" ; } else { page.pathname = name.replace( /[^\/]+$/, "" ) ; }
@@ -290,14 +293,19 @@ function doLoad( name ) {
 	page.pathcrc = crc32(page.path) ;
 	page.href = location.protocol + "//" + location.host + location.pathname + separator + page.name ;
 	page.script = location.protocol + "//" + location.host + location.pathname ;
+	doDebug("doLoad: page.script",page.script);
 	page.url = location.protocol + "//" + location.host + location.pathname.replace( /\/[^\/]*$/,"/" ) + name ;
 	page.data = null ;
 
-	if( sessionStorage.getItem( "MDEditor"+page.pathcrc ) ) { password = sessionStorage.getItem( "MDEditor"+page.pathcrc ) ; }
-	else { password = "" ; }
+	if( sessionStorage.getItem( "MDEditor"+page.pathcrc ) ) {
+		password = sessionStorage.getItem( "MDEditor"+page.pathcrc ) ; 
+	} else {
+		password = "" ; 
+	}
 	if( sessionStorage.getItem( "MDStyle" ) ) { style = sessionStorage.getItem( "MDStyle" ) ; switch_style( style ) ; }
 	
-	if( debug ) { doDebug( "doLoad", page.url ) ; }
+	doDebug( "doLoad", page.url ) ;
+	
 	loadPage( page.url
 		, function(res,s) { 
 			data = res ;
@@ -446,14 +454,17 @@ function doSave() {
 		) ; 
 	}
 }
-function doHash( h, t ) {
-	t = t || true ;
+function doHash( h ) {
 	reg = new RegExp( '^' + separator  ) ;
 	if( !h.match( reg ) ) { h = separator + h ; }
+	doDebug("doHash: h",h) ;
 	reg = null ;
-	if( debug ) { doDebug( "location.assign", page.script + h ) ; }
+	if( !page.script ) { page.script = location.protocol + "//" + location.host + location.pathname ; }
+	doDebug( "doHash: location.assign", page.script + h ) ;
 	location.assign( page.script + h ) ;
-	location.reload( t ) ;
+	location.hash = h;
+	doDebug("doHash: window.location",location) ;
+	location.reload() ;
 }
 function doJump( ev ) {
 	url = ev.hash ;
@@ -463,7 +474,7 @@ function doJump( ev ) {
 			if( url.match( /\.md$/ ) ) {
 				ev.removeAttribute('href');
 				url = page.script + separator + url ;
-				if( debug ) { doDebug( "window.open", url ) ; }
+				doDebug( "window.open", url ) ;
 				window.open( url, "_self", "", true ) ;
 				return true ;
 			} else {
@@ -471,11 +482,11 @@ function doJump( ev ) {
 			}
 			url = url.replace( /\/\//g, "/" ) ;
 		}
-		if( debug ) { doDebug( "location.assign", url ) ; }
+		doDebug( "location.assign", url ) ;
 		location.assign( url ) ;
 		return false;
 	} else {
-		if( debug ) { doDebug( "doHash-->", url ) ; }
+		doDebug( "doHash-->", url ) ;
 		doHash( url ) ;
 		return false ;
 	}
@@ -512,6 +523,7 @@ function doCleanStorage() {
 	console.log("Clean local storage")
 }
 function init() {
+	doDebug( "init", window.location ) ;
 	var Params = getParams() ;
 	if( Params.engine ) { engine = Params.engine.toLowerCase() ; }
 	if( engine == "markdownit" ) {
@@ -552,15 +564,16 @@ function init() {
 		if(style_list.length>0) {
 			for(i=0;i<style_list.length;i++){ console.log("- "+style_list[i]); }
 		}
-		
-		style_list
 	}
 	if( Params.data ) {
+		if( debug ) { console.log("Load parameter base64 data") ; }
 		doHTML( '_internal.md', Params.data ) ;
 	} else {
 		if( location.hash=="" ) { 
+			if( debug ) { console.log( "Jump to page "+location.href + separator + defaultPage ) ; }
 			location.replace( location.href + separator + defaultPage ) ; 
 		} else {
+			if( debug ) { console.log( "Load page "+location.hash ) ; }
 			doLoad( location.hash ) ;
 		}
 	}	Params = null ;
@@ -789,8 +802,10 @@ document.getElementById("content").onclick = function(ev) {
 	}
 }
 window.onhashchange = function() {
-	if( document.getElementById('content').style.display=='none' ) { switchToContent() ; return false ; } 
-	else if (window.location.hash != '#undefined') {
+	if( document.getElementById('content').style.display=='none' ) { 
+		switchToContent() ; return false ; 
+	} else if (window.location.hash != '#undefined') {
+		doDebug( "onhashchange: window.location.hash",window.location.hash ) ;
 	    doHash( window.location.hash ) ;
 	}
 }

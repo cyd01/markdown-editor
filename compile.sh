@@ -47,7 +47,9 @@ echo '<!--THE END-->'
 
 sed  '1,/INCLUDE_END/d' ${main_file}
 
-} | sed 's/var debug = true/var debug = false/' > index.html
+} > index.html
+
+sed -i 's/var debug = true/var debug = false/' index.html
 
 {
 echo '<?php'
