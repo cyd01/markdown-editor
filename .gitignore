@@ -1,6 +1,7 @@
 *.exe
 *.md
 !README.md
+!howto.md
 *.bat
 *.orig
 password.inc

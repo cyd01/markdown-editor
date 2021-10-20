@@ -62,6 +62,20 @@ To switch back to the viewer press escape key
       }
 </style>
 
+<!-- Configuration -->
+<script type="text/javascript">
+var debug = true ;
+var separator = "#/" ;
+var defaultPage = "index.md" ;
+var style_list = [ "original" ] ;
+var style = "original" ;
+var highlightjs = true ;
+//var engine = "marked" ;
+var engine = "markdownit" ;
+//var engine = "showdown" ;
+var backend = "edit" ;
+</script>
+
 
 <script type="text/javascript" src="js/crc32.min.js"></script>
 
@@ -163,15 +177,6 @@ function doEmoji( st ) {
 </script>
 
 <script type="text/javascript">
-var debug = true ;
-var separator = "#/" ;
-var defaultPage = "index.md" ;
-var style_list = [ "original" ] ;
-var style = "original" ;
-var highlightjs = true ;
-var engine = "marked" ;
-//var engine = "showdown" ;
-var backend = "edit.php" ;
 var page = {
 	name: ""
 	, pathname: ""
@@ -184,6 +189,8 @@ var page = {
 } ;
 var password = "" ;
 var salt = "" ;
+
+var regsep = new RegExp( '^' + separator  ) ;
 
 function doDebug( tt, dt ) {
 	if( debug ) {
@@ -283,10 +290,8 @@ function doHTML( name, data ) {
 	renderHTML( "content", page.data ) ;
 }
 function doLoad( name ) {
-	reg = new RegExp( '^' + separator  ) ;
-	name = name.replace( reg, "" ) ;		//name = location.hash.replace( /^#\//, "" ) ;
+	name = name.replace( regsep, "" ) ;		//name = location.hash.replace( /^#\//, "" ) ;
 	if( debug ) { console.log("Ask for page "+name) ; }
-	reg = null ;
 	page.name = name ;
 	if( !name.match( /\// ) ) { page.pathname = "./" ; } else { page.pathname = name.replace( /[^\/]+$/, "" ) ; }
 	page.path = location.protocol + "//" + location.host + location.pathname.replace( /\/[^\/]*$/,"/" ) ;
@@ -455,10 +460,8 @@ function doSave() {
 	}
 }
 function doHash( h ) {
-	reg = new RegExp( '^' + separator  ) ;
-	if( !h.match( reg ) ) { h = separator + h ; }
+	if( !h.match( regsep ) ) { h = separator + h ; }
 	doDebug("doHash: h",h) ;
-	reg = null ;
 	if( !page.script ) { page.script = location.protocol + "//" + location.host + location.pathname ; }
 	doDebug( "doHash: location.assign", page.script + h ) ;
 	location.assign( page.script + h ) ;
@@ -468,6 +471,7 @@ function doHash( h ) {
 }
 function doJump( ev ) {
 	url = ev.hash ;
+	if( url.match(/^#/) && !url.match(regsep) ) { return false ; }
 	if( url == "" ) {
 		url = ev.attributes[0].nodeValue ;
 		if( !url.match( /^http[s]?:\/\// ) ) {
@@ -805,8 +809,13 @@ window.onhashchange = function() {
 	if( document.getElementById('content').style.display=='none' ) { 
 		switchToContent() ; return false ; 
 	} else if (window.location.hash != '#undefined') {
+		if( window.location.hash.match(/^#/) && !window.location.hash.match(regsep) ) {
+			document.getElementById(window.location.hash.substr(1)).scrollIntoView();
+			//window.location.hash=separator+page.name ;
+			return false ; 
+		}
 		doDebug( "onhashchange: window.location.hash",window.location.hash ) ;
-	    doHash( window.location.hash ) ;
+		doHash( window.location.hash ) ;
 	}
 }
 window.addEventListener('click', function (evt) {
