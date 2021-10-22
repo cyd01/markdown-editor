@@ -73,7 +73,7 @@ Use Markdown comments to define special page settings at the very start of the p
 
 Emojis from this [markdown emojis](https://github.com/markdown-templates/markdown-emojis) page is included.
 
-Example: use this special tag &colon;coffee&colon; to print this emoji :coffee:
+Example: use this special tag &colon;<wbr>coffee&shy;: to print this emoji :coffee:
 
 ### Integrated themes
 
