@@ -1,5 +1,6 @@
 [//]: # (title:Markdown editor)
 [//]: # (icon:coffee.ico)
+[//]: # (style:md)
 
 # Welcome to markdown-editor
 
