@@ -42,6 +42,8 @@ echo -n '<script type="text/javascript">' ; cat js/sjcl.js ; echo '</script>'
 echo '<!-- Mermaid -->'
 echo -n '<script type="text/javascript">' ; cat js/mermaid.min.js ; echo '</script>'
 echo -n '<script type="text/javascript">' ; cat js/mermaid-converter.js ; echo '</script>'
+echo '<!-- Emoji -->'
+echo -n '<script type="text/javascript">' ; cat js/emoji.js ; echo '</script>'
 echo
 echo '<!--THE END-->'
 
