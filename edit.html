@@ -572,7 +572,8 @@ function init() {
 		if( location.hash != "" ) {
 			location.replace( location.href.replace(/#.*$/,"") ) ;
 		} else {
-			doHTML( "_local.md", Base64.encode("# This is a local file") ) ;
+			document.getElementById("loadFileForm").style.display="inline";
+			//doHTML( "_local.md", Base64.encode("# This is a local file") ) ;
 		}
 	}
 	Params = null ;
@@ -724,6 +725,27 @@ function renderMermaid() {
       })(this, this.document);
 </script>
 -->
+
+<div id="loadFileForm" style="display: none;">
+Local file: <input type="file" id="loadfile" onchange="onLoadFile(this)" />
+    <script type="text/javascript">
+        function onLoadFile(fileInput) {
+            if(fileInput.files[0] == undefined) {
+                return ;
+            }
+            var reader = new FileReader();
+            reader.onload = function(ev) {
+                var content = ev.target.result; // content is a string
+                doHTML( "_local.md", Base64.encode(content) ) ;
+		document.getElementById("loadFileForm").style.display="none" ;
+            };
+            reader.onerror = function(err) {
+                console.error("Failed to read file", err);
+            }
+            reader.readAsText(fileInput.files[0]);
+        }
+    </script>
+</div>
       
 <div id="editor" style="display: none;">
   <textarea id="ttxt" v-on:click="update" 
