@@ -399,6 +399,7 @@ function switchToEditor() {
 	pct = document.documentElement.scrollTop/ document.documentElement.scrollHeight ;
 	document.getElementById("content").style.display = 'none' ;
 	document.getElementById('ttxt').value = '' ;
+	sessionStorage.setItem( "MDBackup", page.data ) ;
 	data = Base64.decode( page.data ) ;
 	document.getElementById('ttxt').value = data ;
 	document.getElementById("editcss").style.display = 'none' ;
@@ -411,6 +412,7 @@ function switchToEditor() {
 }
 function switchToContent() {
 	pct = document.documentElement.scrollTop/ document.documentElement.scrollHeight ;
+	sessionStorage.removeItem( "MDBackup" ) ;
 	page.data = Base64.encode( document.getElementById('ttxt').value ) ;
 	renderHTML( "content", page.data ) ;
 	document.getElementById("editor").style.display = 'none' ;
@@ -430,6 +432,9 @@ function switch_textedit() {
 		textareaSelect( document.getElementById('ttxt'), n, n ) ; 
 		document.getElementById('ttxt').click() ; 
 	}
+}
+function doBackup() {
+	txt = sessionStorage.getItem( "MDBackup" ) ; 
 }
 function doSave() { 
 	if( page!=null ) {
@@ -753,6 +758,7 @@ Local file: <input type="file" id="loadfile" onchange="onLoadFile(this)" />
 	@keyup.alt.66="doBase64();return false;"
 	@keyup.alt.67="doCleanStorage();return false;"
 	@keyup.alt.80="doPass();"
+	@keyup.alt.82="doBackup();" 
 	@keyup.alt.83="doSave();" 
 	@keyup.alt.84="switch_style(null);info_style();" 
 	@keyup.alt.89="switch_textedit(null);" 
@@ -835,7 +841,7 @@ window.onhashchange = function() {
 		doHash( window.location.hash ) ;
 	}
 }
-window.addEventListener('click', function (evt) {
+window.addEventListener('click', function (evt) { /* Triple click */
     if (evt.detail === 3) {
         switchToEditor() ;
     }

@@ -246,3 +246,7 @@ fi
 # Execute with busybox
 # busybox.exe bash -c "export TINYWEB_CMD='busybox bash' ; export TINYWEB_CAT='busybox cat' ; tinyweb.exe"
 #
+# Execute with Perl webserver
+# perl webserver.pl 8585 .
+# http://localhost:8585/edit.html?backend=sh#/README.md
+#
