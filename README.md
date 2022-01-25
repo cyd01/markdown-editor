@@ -40,8 +40,10 @@ Example: this `README` page is read from a `README.md` file near the `index.html
 Here are the editor shortcuts
 
 - To switch from page viewer to page editor, just triple-click
+- To swith between plain text or base64 press ATL+b
 - To clear local storage press ALT+c
 - To protect the page with password ALT+p
+- To revert current changes press ALT+r
 - To save the page press ALT+s
 - To change style sheet press ALT+t
 - To print help page press ALT+F1 or ALT+z
