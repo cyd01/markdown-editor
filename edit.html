@@ -157,6 +157,7 @@ https://github.com/mermaid-js/mermaid
 
 <!-- INCLUDE_END -->
 
+
 <!--
 	Third-part scripts initialization
 -->
@@ -496,10 +497,15 @@ function doJump( ev ) {
 	}
 }
 function doHelp() {
+  txt = '<ul style="text-align:left;"><li>'+helpMsg.replace(/\n/mg,"</li><li>")+'</li></ul><br/>' ;
+  if( debug ) {
+    txt += '<b>engine</b>: '+engine+' , <b>backend</b>: '+backend+' , <b>style</b>: '+style+'<br/>' ;
+  }
+  txt += '🐞' ;
   Swal.fire({
   width: 600,
   title: 'Help page?',
-  html: ('<ul style="text-align:left;"><li>'+helpMsg.replace(/\n/mg,"</li><li>")+'</li></ul>🐞').replaceAll("<li></li>","")
+  html: (txt).replaceAll("<li></li>","")
   });
 }
 function doPass() {
