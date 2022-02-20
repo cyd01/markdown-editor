@@ -1,10 +1,10 @@
 #!/bin/sh
 
-echo "[//]: # (title:Image Gallery)"
+echo "[//]: # (title:Images Gallery)"
 echo "[//]: # (style:md)"
 echo "[//]: # (https://pixabay.com/fr/users/happymom33-7463641/)"
 
-printf '\n# test\n\n'
+printf '\n# Images Gallery\n\n'
 	
 printf '<style>\n  @keyframes slidy {\n    from { left: 100%%; }\n'
 nb=$(ls -1 img/*.jpg | wc -l)
