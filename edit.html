@@ -183,6 +183,8 @@ var page = {
 var password = "" ;
 var salt = "" ;
 
+var firstLoad = true ; // To disable style tag after first load (to be able to switch style with ATL+t)
+
 var regsep = new RegExp( '^' + separator  ) ;
 
 function doDebug( tt, dt ) {
@@ -259,7 +261,7 @@ function renderHTML( id, data64 ) {
 	if( (res = data.match( /^[ ]*\[\/\/\]:[ ]*#[ ]*\([ ]*title:.*\).*$/m ))!=null ) {
 		document.title = res[0].replace( /.*\([ ]*title:/, "" ).replace( /[ ]*\).*$/, "" ) ;
 	}
-	if( (res = data.match( /^[ ]*\[\/\/\]:[ ]*#[ ]*\([ ]*(style|theme):.*\).*$/m ))!=null ) {
+	if( firstLoad && ((res = data.match( /^[ ]*\[\/\/\]:[ ]*#[ ]*\([ ]*(style|theme):.*\).*$/m ))!=null) ) {
 		switch_style( res[0].replace( /.*\([ ]*style:[ ]*/, "" ).replace( /[ ]*\).*$/, "" ) ) ;
 	}
 	if( (res = data.match( /^[ ]*\[\/\/\]:[ ]*#[ ]*\([ ]*readonly[ ]*\).*$/m ))!=null ) { page.readOnly = true ; }
@@ -275,6 +277,7 @@ function renderHTML( id, data64 ) {
 		link.href = url;
 	}
 	if( document.getElementById(id).innerHTML.match(/```mermaid/) ) { renderMermaid() ; }
+	firstLoad = false ;
 }
 function doHTML( name, data ) {
 	page.data = data ;
@@ -304,6 +307,7 @@ function doLoad( name ) {
 	
 	doDebug( "doLoad", page.url ) ;
 	
+	firstLoad = true ;
 	loadPage( page.url
 		, function(res,s) { 
 			data = res ;
