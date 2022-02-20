@@ -31,6 +31,8 @@ echo -n '<script type="text/javascript">' ; cat js/markdown-it-mark.min.js | tr 
 echo -n '<script type="text/javascript">' ; cat js/markdown-it-ins.min.js | tr -d '\n' ; echo '</script>'
 echo -n '<script type="text/javascript">' ; cat js/markdown-it-sub.min.js | tr -d '\n' ; echo '</script>'
 echo -n '<script type="text/javascript">' ; cat js/markdown-it-sup.min.js | tr -d '\n' ; echo '</script>'
+echo -n '<script type="text/javascript">' ; cat js/markdown-it-task-lists.min.js | tr -d '\n' ; echo '</script>'
+
 echo -n '<script type="text/javascript">' ; cat js/showdown.min.js | tr -d '\n' ; echo '</script>'
 
 echo -n '<script type="text/javascript">' ; cat js/lodash.min.js | tr -d '\n' ; echo '</script>'

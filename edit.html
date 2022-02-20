@@ -123,6 +123,7 @@ https://github.com/markdown-it/markdown-it
 <script type="text/javascript" src="js/markdown-it-ins.js"></script>
 <script type="text/javascript" src="js/markdown-it-sub.js"></script>
 <script type="text/javascript" src="js/markdown-it-sup.js"></script>
+<script type="text/javascript" src="js/markdown-it-task-lists.js"></script>
 
 <!-- Lodash: A modern JavaScript utility library delivering modularity, performance & extras.
 https://lodash.com/
@@ -213,7 +214,7 @@ function doMarkdownIt( data ) {
 	} else {
 	  return str ;
 	}
-    } } ).use(window.markdownitEmoji).use(window.markdownitFootnote).use(window.markdownitMark).use(window.markdownitIns).use(window.markdownitSub).use(window.markdownitSup).use(window.markdownitAbbr);
+    } } ).use(window.markdownitEmoji).use(window.markdownitFootnote).use(window.markdownitMark).use(window.markdownitIns).use(window.markdownitSub).use(window.markdownitSup).use(window.markdownitAbbr).use(window.markdownitTaskLists);
 	return converter.render( data ) ;
 }
 function doShowdown( data ) {
