@@ -536,6 +536,7 @@ function doCleanStorage() {
 function init() {
 	doDebug( "init", window.location ) ;
 	var Params = getParams() ;
+	if( Params.debug ) { debug = true ; }
 	if( Params.engine ) { engine = Params.engine.toLowerCase() ; }
 	if( engine == "markdownit" ) {
 		if( debug ) { console.log("Disable emoji for markdown-it engine") ; }
