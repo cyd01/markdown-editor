@@ -7,3 +7,5 @@
 password.inc
 mdwiki.html
 webserver*
+key.pem
+cert.pem
