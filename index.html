@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1018,7 +1018,7 @@ function renderMermaid() {
 -->
 
 <div id="loadFileForm" style="display: none;">
-Local file: <input type="file" id="loadfile" onchange="onLoadFile(this)" />
+<label>Local file: <input type="file" id="loadfile" onchange="onLoadFile(this)"></label>
     <script type="text/javascript">
         function onLoadFile(fileInput) {
             if(fileInput.files[0] == undefined) {
@@ -1049,7 +1049,7 @@ Local file: <input type="file" id="loadfile" onchange="onLoadFile(this)" />
 	@keyup.alt.84="switch_style(null);info_style();" 
 	@keyup.alt.89="switch_textedit(null);" 
 	@keyup.alt.90="doHelp();return false;"
-	@keyup.esc="switchToContent();" :value="input" @input="update" onScroll="doScroll(this);return false;">
+	@keyup.esc="switchToContent();" :value="input" @input="update" onScroll="doScroll(this);return false;" aria-label="ttxt">
   </textarea>
   <div v-html="compiledMarkdown"></div>
 </div>
@@ -1058,7 +1058,7 @@ Local file: <input type="file" id="loadfile" onchange="onLoadFile(this)" />
   <textarea id="tcss" v-on:click="update" 
 	@keyup.alt.f1="doHelp();return false;" 
 	@keyup.alt.89="switch_textedit(null);" 
-	@keyup.esc="switchToContent();" :value="input" @input="update">
+	@keyup.esc="switchToContent();" :value="input" @input="update" aria-label="editcss">
   </textarea>
   <div v-html="compiledMarkdown2"></div>
 </div>
