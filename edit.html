@@ -363,14 +363,18 @@ function switch_style(css_title) {
 		if( style_list.indexOf(css_title)==-1 ) { return ; }
 		style = css_title ; 
 	}
-var i, link_tag ;
+  var i, link_tag ;
 
- for (i = 0, link_tag = document.getElementsByTagName("style") ;
+  for (i = 0, link_tag = document.getElementsByTagName("style") ;
     i < link_tag.length ; i++ ) {
     if( link_tag[i].title ) {
-      if( link_tag[i].title == "ttxt" ) { link_tag[i].disabled = false ; } else { link_tag[i].disabled = true ; } 
-      if (link_tag[i].title == style) {
+      if( link_tag[i].title == "ttxt" ) {
         link_tag[i].disabled = false ;
+      } else {
+        link_tag[i].disabled = true ;
+        if (link_tag[i].title == style) {
+          link_tag[i].disabled = false ;
+        }
       }
     }
   }
@@ -662,6 +666,7 @@ pre {
 }
 //a { pointer-events:none ; }
 </style>
+
 </head>
 
 <body onLoad="init();">
