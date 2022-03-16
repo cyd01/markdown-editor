@@ -7,13 +7,13 @@ main_file="edit.html"
 sed  '/INCLUDE_START/,$d' ${main_file}
 
 echo -n '<link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,' ; base64 favicon.ico|tr -d '\n' ; echo '">'
-echo -n '<style type="text/css" title="original">' ; cat css/style.min.css | tr -d '\n' ; echo '</style>'
+echo -n '<style rel="stylesheet" type="text/css" title="original">' ; cat css/style.min.css | tr -d '\n' ; echo '</style>'
 
 for style in test normalize github gitlab minist air modest retro splendor screen markdown foghorn md ; do
-	echo -n '<style type="text/css" title="'${style}'">' ; cat css/${style}.min.css | tr -d '\n' ; echo '</style>'
+	echo -n '<style rel="alternate stylesheet" type="text/css" title="'${style}'">' ; cat css/${style}.min.css | tr -d '\n' ; echo '</style>'
 done
 
-echo -n '<style type="text/css">' ; cat css/highlight.min.css | tr -d '\n' ; echo '</style>'
+echo -n '<style rel="stylesheet" type="text/css">' ; cat css/highlight.min.css | tr -d '\n' ; echo '</style>'
 #echo -n '<style type="text/css">' ; cat css/menu.min.css | tr -d '\n' ; echo '</style>'
 
 echo -n '<script type="text/javascript">' ; cat js/sweetalert2.all.min.js | tr -d '\n' ; echo '</script>'

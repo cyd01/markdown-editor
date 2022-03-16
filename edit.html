@@ -363,32 +363,36 @@ function switch_style(css_title) {
 		if( style_list.indexOf(css_title)==-1 ) { return ; }
 		style = css_title ; 
 	}
+	
   var i, link_tag ;
 
-  for (i = 0, link_tag = document.getElementsByTagName("style") ;
-    i < link_tag.length ; i++ ) {
+  for (i = 0, link_tag = document.getElementsByTagName("style") ; i < link_tag.length ; i++ ) {
     if( link_tag[i].title ) {
       if( link_tag[i].title == "ttxt" ) {
         link_tag[i].disabled = false ;
       } else {
-        link_tag[i].disabled = true ;
         if (link_tag[i].title == style) {
           link_tag[i].disabled = false ;
-        }
+        } else {
+	  link_tag[i].disabled = true ;
+	}
       }
     }
   }
-
-  for (i = 0, link_tag = document.getElementsByTagName("link") ;
-    i < link_tag.length ; i++ ) {
-    if ((link_tag[i].rel.indexOf( "stylesheet" ) != -1) &&
-      link_tag[i].title) {
+  
+  for (i = 0, link_tag = document.getElementsByTagName("link") ; i < link_tag.length ; i++ ) {
+    if ((link_tag[i].rel.indexOf( "stylesheet" ) != -1) && link_tag[i].title) {
       link_tag[i].disabled = true ;
       if (link_tag[i].title == style) {
         link_tag[i].disabled = false ;
       }
+      if( link_tag[i].title == "ttxt" ) {
+        link_tag[i].disabled = false ;
+      }
     }
-  }/*
+  }
+  
+  /*
  for (i = 0, link_tag = document.getElementsByTagName("style") ;
     i < link_tag.length ; i++ ) {
     if( link_tag[i].title ) {
@@ -510,7 +514,7 @@ function doHelp() {
   if( debug ) {
     txt += '<b>engine</b>: '+engine+' , <b>backend</b>: '+backend+' , <b>style</b>: '+style+'<br/>' ;
   }
-  txt += '🐞' ;
+  txt += '🐞' + '<br/' ;
   Swal.fire({
   width: 600,
   title: 'Help page?',
@@ -609,7 +613,7 @@ function init() {
 }
 </script>
 
-<style type="text/css" title="ttxt">
+<style type="text/css">
 #content {
   padding: 3px 3% 3% 3% ;
 }
