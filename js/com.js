@@ -40,7 +40,7 @@ function force_scroll(el, pct) {
 	if( el==null ) { return ; }
 	el.scrollTop = parseInt( pct * el.scrollHeight ) ;
 }
-function loadPage(page,fctok,fctko) {
+function loadPage(page,fctok,fctko,noblock=true) {
 	var xhr = null ;
 	try { xhr = new XMLHttpRequest() ;
 	} catch(e) {
@@ -66,7 +66,7 @@ function loadPage(page,fctok,fctko) {
 			}
 		}
 	}
-	xhr.open( "GET", page, true ) ;
+	xhr.open( "GET", page, noblock ) ;
 	xhr.withCredentials = true ;
 	xhr.send( null ) ;
 }
