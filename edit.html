@@ -172,6 +172,7 @@ https://github.com/mermaid-js/mermaid
 	Personnal scripts
 -->
 <script type="text/javascript"> <!-- Joke Konami script -->
+<!--
 function onKonamiCode(cb) {
   var input = '';
   var key = '38384040373937396665';
@@ -185,7 +186,14 @@ function onKonamiCode(cb) {
     input = ("" + e.keyCode);
   });
 }
-onKonamiCode(function () {alert('\\o/')})
+onKonamiCode(function () {
+['', '-ms-', '-webkit-', '-o-', '-moz-'].map(function(prefix){
+  Array.prototype.slice.call(document.querySelectorAll('div,p,span,img,a,body')).map(function(el){
+    el.style[prefix + 'transform'] = 'rotate(' + (Math.floor(Math.random() * 10) - 1) + 'deg)';
+  });
+});
+})
+-->
 </script>
 
 <script type="text/javascript">
@@ -403,11 +411,7 @@ function switch_style(name) {
 				if( debug ) { console.log( "Switch style to:", name ) ; }
 				if( styles[i].value == "" ) { load_style( name ) ; }
 				style = name ;
-				var sheetToBeRemoved = document.getElementById("currentStyle");
-				if( sheetToBeRemoved != null ) {
-					var sheetParent = sheetToBeRemoved.parentNode ;
-					sheetParent.removeChild(sheetToBeRemoved) ;
-				}
+				
 				var sheet = document.createElement('style')
 				sheet.innerHTML = styles[i].value ;
 				sheet.id = "currentStyle" ;
