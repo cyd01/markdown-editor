@@ -436,6 +436,22 @@ function doEmoji( st ) {
 <!--
 	Personnal scripts
 -->
+<script type="text/javascript"> <!-- Joke Konami script -->
+function onKonamiCode(cb) {
+  var input = '';
+  var key = '38384040373937396665';
+  // up up down down left right left right b a
+  document.addEventListener('keydown', function (e) {
+    input += ("" + e.keyCode);
+    if (input === key) {
+      return cb();
+    }
+    if (!key.indexOf(input)) return;
+    input = ("" + e.keyCode);
+  });
+}
+onKonamiCode(function () {alert('\\o/')})
+</script>
 
 <script type="text/javascript">
 var page = {
