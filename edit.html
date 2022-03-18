@@ -523,7 +523,7 @@ function doHelp() {
   Swal.fire({
   width: 600,
   title: 'Help page?',
-  html: (txt).replaceAll("<li></li>","")
+  html: (txt).replace(/<li><\/li>/g,"")
   });
 }
 function doPass() {

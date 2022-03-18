@@ -417,7 +417,7 @@ var emoji_keys = Object.keys(emoji_list) ;
 function doEmoji( st ) {
 	if( emoji_flag ) {
 		for( i=0; i<emoji_keys.length; i++) {
-			st = st.replaceAll( ":"+emoji_keys[i]+":", emoji_list[emoji_keys[i]] ) ;
+			st = st.replace( ":"+emoji_keys[i]+":g", emoji_list[emoji_keys[i]] ) ;
 		}
 	}
 	return st;
@@ -788,7 +788,7 @@ function doHelp() {
   Swal.fire({
   width: 600,
   title: 'Help page?',
-  html: (txt).replaceAll("<li></li>","")
+  html: (txt).replace(/<li><\/li>/g,"")
   });
 }
 function doPass() {

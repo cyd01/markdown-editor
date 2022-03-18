@@ -5,7 +5,7 @@ var emoji_keys = Object.keys(emoji_list) ;
 function doEmoji( st ) {
 	if( emoji_flag ) {
 		for( i=0; i<emoji_keys.length; i++) {
-			st = st.replaceAll( ":"+emoji_keys[i]+":", emoji_list[emoji_keys[i]] ) ;
+			st = st.replace( ":"+emoji_keys[i]+":g", emoji_list[emoji_keys[i]] ) ;
 		}
 	}
 	return st;
