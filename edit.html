@@ -189,7 +189,7 @@ function onKonamiCode(cb) {
 onKonamiCode(function () {
 ['', '-ms-', '-webkit-', '-o-', '-moz-'].map(function(prefix){
   Array.prototype.slice.call(document.querySelectorAll('div,p,span,img,a,body')).map(function(el){
-    el.style[prefix + 'transform'] = 'rotate(' + (Math.floor(Math.random() * 10) - 1) + 'deg)';
+    el.style[prefix + 'transform'] = 'rotate(' + (Math.floor(Math.random() * 20) - 10) + 'deg)';
   });
 });
 })
