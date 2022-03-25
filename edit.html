@@ -47,6 +47,7 @@ var highlightjs = true ;
 var engine = "markdownit" ;
 //var engine = "showdown" ;
 var backend = "edit" ;
+var initial_data = "" ;
 </script>
 
 
@@ -601,7 +602,10 @@ function init() {
 			for(i=0;i<styles.length;i++){ console.log("- "+styles[i].name); }
 		}
 	}
-	if( Params.data ) {
+	if( initial_data.length>0 ) {
+		if( debug ) { console.log("Use base64 initial_data") ; }
+		doHTML( '_internal.md', initial_data ) ;
+	} else if( Params.data ) {
 		if( debug ) { console.log("Load parameter base64 data") ; }
 		doHTML( '_internal.md', Params.data ) ;
 	} else if( !location.href.match(/^file:\/\/\//) ) {
