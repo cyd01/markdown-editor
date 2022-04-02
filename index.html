@@ -704,6 +704,7 @@ function info_style() {
   });
 }
 function switchToEditor() {
+	document.getElementById("loadFileForm").style.display="none" ;
 	if( page.readOnly ) { console.log("Page in read only mode") ; return ; }
 	pct = document.documentElement.scrollTop/ document.documentElement.scrollHeight ;
 	document.getElementById("content").style.display = 'none' ;
