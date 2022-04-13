@@ -704,7 +704,10 @@ function info_style() {
   });
 }
 function switchToEditor() {
-	document.getElementById("loadFileForm").style.display="none" ;
+	if( document.getElementById("loadFileForm").style.display != "none" ) {
+		document.getElementById("loadFileForm").style.display = "none" ;
+		document.title = "☢" ;
+	}
 	if( page.readOnly ) { console.log("Page in read only mode") ; return ; }
 	pct = document.documentElement.scrollTop/ document.documentElement.scrollHeight ;
 	document.getElementById("content").style.display = 'none' ;
@@ -887,7 +890,8 @@ function init() {
 		if( location.hash != "" ) {
 			location.replace( location.href.replace(/#.*$/,"") ) ;
 		} else {
-			document.getElementById("loadFileForm").style.display="inline";
+			document.getElementById("loadFileForm").style.display = "inline" ;
+			document.title = "☢ - Local file" ;
 			//doHTML( "_local.md", Base64.encode("# This is a local file") ) ;
 		}
 	}
@@ -1053,12 +1057,12 @@ function renderMermaid() {
             reader.onload = function(ev) {
                 var content = ev.target.result; // content is a string
                 doHTML( "_local.md", Base64.encode(content) ) ;
-		document.getElementById("loadFileForm").style.display="none" ;
+                document.getElementById("loadFileForm").style.display = "none" ;
             };
             reader.onerror = function(err) {
-                console.error("Failed to read file", err);
+                console.error("Failed to read file", err) ;
             }
-            reader.readAsText(fileInput.files[0]);
+            reader.readAsText(fileInput.files[0]) ;
         }
     </script>
 </div>
