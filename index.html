@@ -1073,7 +1073,8 @@ function renderMermaid() {
 	@keyup.alt.66="doBase64();return false;"
 	@keyup.alt.67="doCleanStorage();return false;"
 	@keyup.alt.80="doPass();"
-	@keyup.alt.82="doBackup();" 
+	@keyup.alt.81="console.log(page);"
+	@keyup.alt.82="doBackup();"
 	@keyup.alt.83="doSave();" 
 	@keyup.alt.84="switch_style(null);info_style();" 
 	@keyup.alt.89="switch_textedit(null);" 
@@ -1158,6 +1159,7 @@ window.onhashchange = function() {
 }
 window.addEventListener('click', function (evt) { /* Triple click */
     if (evt.detail === 3) {
+	if( page.name.length==0 ) { page.name = "_internal.md" ; }
         switchToEditor() ;
     }
 });
