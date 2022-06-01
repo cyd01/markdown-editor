@@ -413,6 +413,11 @@ function switch_style(name) {
 				if( styles[i].value == "" ) { load_style( name ) ; }
 				style = name ;
 				
+				if( old = document.getElementById("currentStyle") ) {
+					if( debug ) { console.log( "Remove previous style" ) ; }
+					document.body.removeChild(old) ;
+				}
+				
 				var sheet = document.createElement('style')
 				sheet.innerHTML = styles[i].value ;
 				sheet.id = "currentStyle" ;
