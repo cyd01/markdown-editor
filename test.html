@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <title>test</title>
+  <style rel="stylesheet" type="text/css" title="green">
+body { background: green; }
+  </style>
+  <style rel="alternate stylesheet" type="text/css" title="red" disabled>
+body { background: red; }
+  </style>
+  <script type="text/javascript">
+function doclick(){
+  list=document.getElementsByTagName("style")
+  for(i=0; i<list.length; i++) {
+    if(list[i].disabled) { list[i].disabled=false ; } else { list[i].disabled=true ; }
+  }
+}
+  </script>
+  </head>
+  <body>
+    <h1>This is a test</h1>
+    <button onClick="doclick();return false;">Click</button>
+  </body>
+</html>

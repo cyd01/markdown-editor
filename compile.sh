@@ -36,15 +36,18 @@ echo -n '<script type="text/javascript">' ; cat js/crc32.min.js | tr -d '\n' ; e
 echo -n '<script type="text/javascript">' ; cat js/vue.min.js | tr -d '\n' ; echo '</script>'
 
 echo -n '<script type="text/javascript">' ; cat js/marked.min.js | tr -d '\n' ; echo '</script>'
+
 echo -n '<script type="text/javascript">' ; cat js/markdown-it.min.js | tr -d '\n' ; echo '</script>'
+echo -n '<script type="text/javascript">' ; cat js/markdown-it-abbr.min.js | tr -d '\n' ; echo '</script>'
 echo -n '<script type="text/javascript">' ; cat js/markdown-it-emoji.min.js | tr -d '\n' ; echo '</script>'
 echo -n '<script type="text/javascript">' ; cat js/markdown-it-footnote.min.js | tr -d '\n' ; echo '</script>'
-echo -n '<script type="text/javascript">' ; cat js/markdown-it-abbr.min.js | tr -d '\n' ; echo '</script>'
-echo -n '<script type="text/javascript">' ; cat js/markdown-it-mark.min.js | tr -d '\n' ; echo '</script>'
 echo -n '<script type="text/javascript">' ; cat js/markdown-it-ins.min.js | tr -d '\n' ; echo '</script>'
+echo -n '<script type="text/javascript">' ; cat js/markdown-it-mark.min.js | tr -d '\n' ; echo '</script>'
 echo -n '<script type="text/javascript">' ; cat js/markdown-it-sub.min.js | tr -d '\n' ; echo '</script>'
 echo -n '<script type="text/javascript">' ; cat js/markdown-it-sup.min.js | tr -d '\n' ; echo '</script>'
 echo -n '<script type="text/javascript">' ; cat js/markdown-it-task-lists.min.js | tr -d '\n' ; echo '</script>'
+echo -n '<script type="text/javascript">' ; cat js/markdown-it-anchor.min.js | tr -d '\n' ; echo '</script>'
+echo -n '<script type="text/javascript">' ; cat js/markdown-it-toc-done-right.min.js | tr -d '\n' ; echo '</script>'
 
 echo -n '<script type="text/javascript">' ; cat js/showdown.min.js | tr -d '\n' ; echo '</script>'
 

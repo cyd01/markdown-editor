@@ -120,14 +120,16 @@ https://markdown-it.github.io/
 https://github.com/markdown-it/markdown-it
 -->
 <script type="text/javascript" src="js/markdown-it.js"></script>
+<script type="text/javascript" src="js/markdown-it-abbr.js"></script>
 <script type="text/javascript" src="js/markdown-it-emoji.js"></script>
 <script type="text/javascript" src="js/markdown-it-footnote.js"></script>
-<script type="text/javascript" src="js/markdown-it-abbr.js"></script>
-<script type="text/javascript" src="js/markdown-it-mark.js"></script>
 <script type="text/javascript" src="js/markdown-it-ins.js"></script>
+<script type="text/javascript" src="js/markdown-it-mark.js"></script>
 <script type="text/javascript" src="js/markdown-it-sub.js"></script>
 <script type="text/javascript" src="js/markdown-it-sup.js"></script>
 <script type="text/javascript" src="js/markdown-it-task-lists.js"></script>
+<script type="text/javascript" src="js/markdown-it-anchor.min.js"></script>
+<script type="text/javascript" src="js/markdown-it-toc-done-right.min.js"></script>
 
 <!-- Lodash: A modern JavaScript utility library delivering modularity, performance & extras.
 https://lodash.com/
@@ -244,8 +246,8 @@ function doMarkdownIt( data ) {
 	} else {
 	  return str ;
 	}
-    } } ).use(window.markdownitEmoji).use(window.markdownitFootnote).use(window.markdownitMark).use(window.markdownitIns).use(window.markdownitSub).use(window.markdownitSup).use(window.markdownitAbbr).use(window.markdownitTaskLists);
-	return converter.render( data ) ;
+    } } ).use(window.markdownitEmoji).use(window.markdownitFootnote).use(window.markdownitMark).use(window.markdownitIns).use(window.markdownitSub).use(window.markdownitSup).use(window.markdownitAbbr).use(window.markdownitTaskLists).use(window.markdownItAnchor, { permalink: true, permalinkBefore: true, permalinkSymbol: '§' }).use(window.markdownItTocDoneRight);
+	return converter.render( data.replace(/__([^_]*)__/gm, '<u>$1</u>') ) ;
 }
 function doShowdown( data ) {
 	var converter = new showdown.Converter({tables: true, strikethrough: true, parseImgDimensions: true, simplifiedAutoLink: true, excludeTrailingPunctuationFromURLs: true, tasklists: true, smoothLivePreview: true}) ;
@@ -695,6 +697,8 @@ pre {
   overflow-wrap: break-word;
 }
 //a { pointer-events:none ; }
+.header-anchor { display: none; }
+}
 </style>
 
 </head>
