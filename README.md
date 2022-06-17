@@ -2,8 +2,6 @@
 [//]: # (icon:coffee.ico)
 [//]: # (style:md)
 
-[[_toc_]]
-
 # Welcome to markdown-editor
 
 This markdown-editor is a 99% client-side javascript viewer and editor for markdown.
