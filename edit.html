@@ -7,10 +7,11 @@
 <title>☢</title>
 
 <!-- HELP
-/index.html?engine=showdown&style=gitlab&backend=_#/README.md
+/index.html?engine=showdown&style=gitlab&backend=_&underscore=false#/README.md
 	engine: marked, markdownit, showdown, raw, base64
 	style: original, normalize, github, gitlab, minist, air, modest, retro, splendor, screen, markdown
 	backend: php, sh, gy, _ (add no extension)
+	underscore: enable or disable double underscore replacement
 
 /index.html?data=Wy8vXTogIyAodGl0bGU6VGl0bGUpCgojIE1haW4gdGl0bGUKClRoaXMgaXMgYSBzaG9ydCB0ZXh0
 	Text is base64 encoded
@@ -48,6 +49,7 @@ var engine = "markdownit" ;
 //var engine = "showdown" ;
 var backend = "edit" ;
 var initial_data = "" ;
+var underscore_flag = true ;
 </script>
 
 
@@ -247,17 +249,33 @@ function doMarkdownIt( data ) {
 	  return str ;
 	}
     } } ).use(window.markdownitEmoji).use(window.markdownitFootnote).use(window.markdownitMark).use(window.markdownitIns).use(window.markdownitSub).use(window.markdownitSup).use(window.markdownitAbbr).use(window.markdownitTaskLists).use(window.markdownItAnchor, { permalink: true, permalinkBefore: true, permalinkSymbol: '§' }).use(window.markdownItTocDoneRight);
-	return converter.render( data.replace(/__([^_]*)__/gm, '<u>$1</u>') ) ;
+	if( underscore_flag ) {
+		return converter.render( data.replace(/__([^_]*)__/gm, '<u>$1</u>') ) ;
+	} else {
+		return converter.render( data ) ;
+	}
 }
 function doShowdown( data ) {
 	var converter = new showdown.Converter({tables: true, strikethrough: true, parseImgDimensions: true, simplifiedAutoLink: true, excludeTrailingPunctuationFromURLs: true, tasklists: true, smoothLivePreview: true}) ;
-	return converter.makeHtml( data.replace(/__([^_]*)__/gm, '<u>$1</u>') ) ;
+	if( underscore_flag ) {
+		return converter.makeHtml( data.replace(/__([^_]*)__/gm, '<u>$1</u>') ) ;
+	} else {
+		return converter.makeHtml( data ) ;
+	}
 }
 function doMarked( data ) {
 	if( highlightjs ) {
-		return  marked( data.replace(/__([^_]*)__/gm, '<u>$1</u>'), { highlight: function(code) { return hljs.highlightAuto(code).value ; } } ) ;
+		if( underscore_flag ) {
+			return  marked( data.replace(/__([^_]*)__/gm, '<u>$1</u>'), { highlight: function(code) { return hljs.highlightAuto(code).value ; } } ) ;
+		} else {
+			return  marked( data, { highlight: function(code) { return hljs.highlightAuto(code).value ; } } ) ;
+		}
 	} else {
-		return  marked( data.replace(/__([^_]*)__/gm, '<u>$1</u>') ) ;
+		if( underscore_flag ) {
+			return  marked( data.replace(/__([^_]*)__/gm, '<u>$1</u>') ) ;
+		} else {
+			return  marked( data ) ;
+		}
 	}
 }
 function doMermaid( data ) {
@@ -597,6 +615,11 @@ function init() {
 		else if( !backend.match( /\./ ) ) {  backend = "edit." + Params.backend.toLowerCase() ; }
 		else if( backend=="edit.groovy" ) { backend = "edit.gy" ; }
 		else if( backend=="edit._" ) { backend = "edit" ; }
+	}
+	if( Params.underscore ) {
+		if( Params.underscore == "false" ) {
+			underscore_flag = false ;
+		}
 	}
 	
 	if( Params.style ) {
