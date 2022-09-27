@@ -78,6 +78,18 @@ Emojis from this [markdown emojis](https://github.com/markdown-templates/markdow
 
 Example: use this special tag &colon;<wbr>coffee&shy;: to print this emoji :coffee:
 
+### Special Markdown-it features
+
+With [markdown-it](https://markdown-it.github.io/) some new features are available, such as:
+
+- Subscript: H~2~O (`H~2~O`)
+- Superscript: 29^th^ (`29^th^`)
+- ++Inserted text++ (`++Inserted text++`)
+- ==Marked text== (`==Marked text==`)
+- Abbreviations (`*[Abbreviations]: This is an abbreviation`)
+- footnotes^[Text of inline footnote] (`^[Text of inline footnote]`)
+*[Abbreviations]: This is an abbreviation
+
 ### Integrated themes
 
 Some style are already embedded into markdown-editor:
