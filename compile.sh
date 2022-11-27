@@ -17,7 +17,7 @@ echo -n '<script type="text/javascript">
 var styles = ['
 
 echo -n '  { name: "original", url: "css/style.css", value: "' ; cat css/style.min.css | tr -d '\n' | sed 's/"/\\"/g' ; echo '" }'
-for style in test normalize github gitlab minist air modest retro splendor screen markdown foghorn md ; do
+for style in test normalize github gitlab minist air modest retro splendor screen markdown foghorn md mini pico ; do
 	echo -n '  , { name: "'${style}'", url: "css/'${style}'.css", value: "@charset \"utf-8\";' ; cat css/${style}.min.css | tr -d '\n' | sed 's/"/\\"/g' ; echo '" }'
 done
 

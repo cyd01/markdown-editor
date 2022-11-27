@@ -109,6 +109,8 @@ Some style are already embedded into markdown-editor:
 - [markdown](https://mrcoles.com/demo/markdown-css/)
 - [foghorn](https://github.com/jasonm23/markdown-css-themes/)
 - [md](https://github.com/elrrrrrrr/markdown-css/blob/master/css/md.css)
+- [mini.css](https://github.com/Chalarangelo/mini.css)
+- [picocss](https://github.com/picocss/pico)
 
 ### Integrated mermaid
 
