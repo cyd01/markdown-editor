@@ -57,7 +57,7 @@ Here are the editor shortcuts
 
 | Parameter | Description                   | Example                                                                                              |
 | --------- | ----------------------------- | ---------------------------------------------------------------------------------------------------- |
-| data      | the base64 encoded text       | [example](/?data=Wy8vXTogIyAodGl0bGU6VGl0bGUpCgojIE1haW4gdGl0bGUKClRoaXMgaXMgYSBzaG9ydCB0ZXh0)       |
+| data      | the base64 encoded text       | [example](?data=Wy8vXTogIyAodGl0bGU6VGl0bGUpCgojIE1haW4gdGl0bGUKClRoaXMgaXMgYSBzaG9ydCB0ZXh0)       |
 | engine    | the markdown rendering engine | choose between markedjs, mardown-it and showdown ([markdown-it](/?engine=markdownit) is the default) |
 | style     | choose a embedded style       | see below for the embedded sytles list                                                               |
 
