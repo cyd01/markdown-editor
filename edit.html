@@ -97,7 +97,7 @@ https://github.com/dankogai/js-base64
 
 <!-- SweetAlert2 A beautiful, responsive, customizable, accessible (WAI-ARIA) replacement for JavaScript's popup boxes
 https://sweetalert2.github.io/
-https://cdn.jsdelivr.net/npm/sweetalert2@10
+https://cdn.jsdelivr.net/npm/sweetalert2@11
 -->
 <script type="text/javascript" src="js/sweetalert2.all.min.js"></script>
 <!--[if IE]><!--><script type="text/javascript" src="js/promise.min.js"></script><!--<![endif]--> <!--After Sweet Alert-->
@@ -113,15 +113,16 @@ https://github.com/showdownjs/showdown
 -->
 <script type="text/javascript" src="js/showdown.min.js"></script>
 
-<!-- Marked
+<!-- Marked  (prendre le fichier marked.umd.js)
 https://github.com/markedjs/marked
-https://github.com/markedjs/marked/raw/master/marked.min.js
+https://cdn.jsdelivr.net/npm/marked/marked.min.js
 -->
-<script type="text/javascript" src="js/marked.js"></script>
+<script type="text/javascript" src="js/marked.min.js"></script>
 
 <!-- Markdown-it
 https://markdown-it.github.io/
 https://github.com/markdown-it/markdown-it
+https://www.jsdelivr.com/package/npm/markdown-it#id-install
 -->
 <script type="text/javascript" src="js/markdown-it.js"></script>
 <script type="text/javascript" src="js/markdown-it-abbr.js"></script>
@@ -155,6 +156,7 @@ https://github.com/bitwiseshiftleft/sjcl
 <!-- Mermaid: Diagram as code
 http://mermaid-js.github.io/mermaid/
 https://github.com/mermaid-js/mermaid
+https://www.npmjs.com/package/mermaid
 -->
 <script type="text/javascript" src="js/mermaid.js"></script>
 <script type="text/javascript" src="js/mermaid-converter.js"></script>
@@ -268,15 +270,15 @@ function doShowdown( data ) {
 function doMarked( data ) {
 	if( highlightjs ) {
 		if( underscore_flag ) {
-			return  marked( data.replace(/__([^_]*)__/gm, '<u>$1</u>'), { highlight: function(code) { return hljs.highlightAuto(code).value ; } } ) ;
+			return  marked.parse( data.replace(/__([^_]*)__/gm, '<u>$1</u>'), { highlight: function(code) { return hljs.highlightAuto(code).value ; } } ) ;
 		} else {
-			return  marked( data, { highlight: function(code) { return hljs.highlightAuto(code).value ; } } ) ;
+			return  marked.parse( data, { highlight: function(code) { return hljs.highlightAuto(code).value ; } } ) ;
 		}
 	} else {
 		if( underscore_flag ) {
-			return  marked( data.replace(/__([^_]*)__/gm, '<u>$1</u>') ) ;
+			return  marked.parse( data.replace(/__([^_]*)__/gm, '<u>$1</u>') ) ;
 		} else {
-			return  marked( data ) ;
+			return  marked.parse( data ) ;
 		}
 	}
 }
